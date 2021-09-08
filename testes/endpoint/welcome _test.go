@@ -2,7 +2,7 @@ package endpoint
 
 import (
 	"fmt"
-	"iceCreamApiWithDI/handler"
+	"iceCreamApiWithDI/layers/handler"
 	"net/http"
 	"net/http/httptest"
 	"testing"

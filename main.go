@@ -1,40 +1,51 @@
 package main
 
 import (
-	"iceCreamApiWithDI/database"
-	"iceCreamApiWithDI/database/ModelForGorm"
-	"iceCreamApiWithDI/handler"
+	"github.com/joho/godotenv"
+	database2 "iceCreamApiWithDI/layers/database"
+	ModelForGorm2 "iceCreamApiWithDI/layers/database/ModelForGorm"
+	"iceCreamApiWithDI/layers/handler"
+	"iceCreamApiWithDI/layers/service"
 	"iceCreamApiWithDI/server"
-	"iceCreamApiWithDI/service"
 	"log"
+	"os"
+	"strconv"
 )
 
 func main() {
 
-	configDB := database.ConfigDB{
-		Password: "00000",
-		Host:     "localhost",
-		Sslmode:  "disable",
-		Port:     "4000",
-		User:     "postgres",
+	errEnv := godotenv.Load()
+	if errEnv != nil {
+		log.Fatal("Error loading .env file")
 	}
-	EngineDatabase, errDBacon := database.EnginPostgres(configDB)
+
+	configDB := database2.ConfigDB{
+		Password: os.Getenv("DB_password"),
+		Host:     os.Getenv("DB_host"),
+		Sslmode:  os.Getenv("DB_sslmode"),
+		Port:     os.Getenv("DB_port"),
+		User:     os.Getenv("DB_user"),
+	}
+	EngineDatabase, errDBacon := database2.EnginPostgres(configDB)
 	if errDBacon != nil {
 		log.Panicln(errDBacon)
 	}
 
-	MigrateFlag := false
+	needToMig,_:=strconv.ParseBool(os.Getenv("DB_need_to_mig"))
 
-	if MigrateFlag != false {
-		EngineDatabase.AutoMigrate(&ModelForGorm.Users{}, &ModelForGorm.IceCreams{})
+	if needToMig {
+		errMig:=EngineDatabase.AutoMigrate(&ModelForGorm2.Users{}, &ModelForGorm2.IceCreams{})
+		if errMig!=nil{
+			log.Panicln(errMig)
+		}
 	}
 
-	Repository := database.NewDataBase(EngineDatabase)
+	Repository := database2.NewDataBase(EngineDatabase)
 	Service := service.NewServices(Repository)
 	MyHandler := handler.NewHandler(Service)
 	Server := new(server.Server)
-	errSrv := Server.Run("8080", MyHandler.InitHandler())
+	errSrv := Server.Run(os.Getenv("ServerPort"), MyHandler.InitHandler())
 	if errSrv != nil {
-		log.Panicln("srv Error")
+		log.Panicln("server Error")
 	}
 }

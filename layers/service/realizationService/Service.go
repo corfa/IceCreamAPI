@@ -1,6 +1,8 @@
 package realizationService
 
-import "iceCreamApiWithDI/database"
+import (
+	"iceCreamApiWithDI/layers/database"
+)
 
 type Service struct {
 	database.IDataBase

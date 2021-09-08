@@ -1,8 +1,8 @@
 package mock
 
 import (
-	"iceCreamApiWithDI/database/ModelForGorm"
-	"iceCreamApiWithDI/handler/ModelForGin"
+	"iceCreamApiWithDI/layers/database/ModelForGorm"
+	"iceCreamApiWithDI/layers/handler/ModelForGin"
 )
 
 type MockDataBase struct {
@@ -15,15 +15,12 @@ func (b MockDataBase) GetUser(user ModelForGin.GetUser) (*ModelForGorm.Users, er
 	testUser := new(ModelForGorm.Users)
 	return testUser, nil
 }
-func (b MockDataBase) GetIceCream() {
 
-}
-func (b MockDataBase) UpdateUser() {
 
+func (b MockDataBase) DeleteIceCream(iceCream ModelForGin.IceCream) error {
+	return nil
 }
-func (b MockDataBase) DeleteIceCream() {
-
-}
-func (b MockDataBase) CreateIceCream() {
+func (b MockDataBase) CreateIceCream(iceCream ModelForGin.IceCream) error {
+	return nil
 
 }

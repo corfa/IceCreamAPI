@@ -2,7 +2,7 @@ package handler
 
 import (
 	"github.com/gin-gonic/gin"
-	"iceCreamApiWithDI/service"
+	"iceCreamApiWithDI/layers/service"
 )
 
 type Handler struct {
@@ -21,6 +21,12 @@ func (h *Handler) InitHandler() *gin.Engine {
 	{
 		auth.POST("/sing-up", h.SingUp)
 		auth.POST("/sing-in", h.SingIn)
+	}
+	iceCream:=router.Group("/ice-cream")
+	{
+		iceCream.POST("/add",h.addIceCream)
+		iceCream.POST("/del",h.DelIceCream)
+
 	}
 
 	return router

@@ -2,17 +2,15 @@ package database
 
 import (
 	"gorm.io/gorm"
-	"iceCreamApiWithDI/database/ModelForGorm"
-	"iceCreamApiWithDI/handler/ModelForGin"
+	"iceCreamApiWithDI/layers/database/ModelForGorm"
+	"iceCreamApiWithDI/layers/handler/ModelForGin"
 )
 
 type IDataBase interface {
 	CreateUser(ModelForGin.CreateUser) error
 	GetUser(user ModelForGin.GetUser) (*ModelForGorm.Users, error)
-	UpdateUser()
-	CreateIceCream()
-	DeleteIceCream()
-	GetIceCream()
+	CreateIceCream(iceCream ModelForGin.IceCream) error
+	DeleteIceCream(IceCream ModelForGin.IceCream) error
 }
 
 type DataBase struct {

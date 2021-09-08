@@ -1,8 +1,8 @@
 package service
 
 import (
+	"iceCreamApiWithDI/layers/service"
 	"iceCreamApiWithDI/mock"
-	"iceCreamApiWithDI/service"
 	"testing"
 )
 

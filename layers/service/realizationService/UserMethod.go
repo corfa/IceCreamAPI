@@ -2,16 +2,16 @@ package realizationService
 
 import (
 	"errors"
-	"iceCreamApiWithDI/handler/ModelForGin"
+	ModelForGin2 "iceCreamApiWithDI/layers/handler/ModelForGin"
 )
 
-func (s *Service) CreateUser(data ModelForGin.CreateUser) error {
+func (s *Service) CreateUser(data ModelForGin2.CreateUser) error {
 	data.Password = s.HashPassword(data.Password)
 	err := s.IDataBase.CreateUser(data)
 	return err
 }
 
-func (s *Service) LoginUser(data ModelForGin.GetUser) (string, error) {
+func (s *Service) LoginUser(data ModelForGin2.GetUser) (string, error) {
 	user, userErr := s.IDataBase.GetUser(data)
 	if userErr != nil {
 		return "", userErr
@@ -23,3 +23,5 @@ func (s *Service) LoginUser(data ModelForGin.GetUser) (string, error) {
 	return s.CreateJWToken(user.Id)
 
 }
+
+

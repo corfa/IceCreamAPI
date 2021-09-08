@@ -1,5 +1,5 @@
 package ModelForGin
 
-type CreateIceCream struct {
+type IceCream struct {
 	Flavor string `json:"flavor" binding:"required"`
 }

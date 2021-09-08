@@ -1,7 +1,7 @@
 package endpoint
 
 import (
-	"iceCreamApiWithDI/handler"
+	"iceCreamApiWithDI/layers/handler"
 	"iceCreamApiWithDI/mock"
 	"testing"
 )

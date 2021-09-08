@@ -3,20 +3,20 @@ package realizationService
 import (
 	"errors"
 	"github.com/dgrijalva/jwt-go"
+	"os"
 	"time"
 )
-
 type tokenClaims struct {
 	jwt.StandardClaims
 	UserId int `json:"user_id"`
 }
 
 const (
-	signingKey = "qrkjk#4#%35FSFJlja#4353KSFjH"
-	tokenTTL   = 12 * time.Hour
-)
 
+	tokenTTL   = 2 * time.Hour
+)
 func (s *Service) CreateJWToken(id int) (string, error) {
+
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, &tokenClaims{
 		jwt.StandardClaims{
@@ -26,7 +26,7 @@ func (s *Service) CreateJWToken(id int) (string, error) {
 		id,
 	})
 
-	return token.SignedString([]byte(signingKey))
+	return token.SignedString([]byte(os.Getenv("JWTKey")))
 }
 
 func (s *Service) ReadJWToken(accessToken string) (int, error) {
@@ -35,7 +35,7 @@ func (s *Service) ReadJWToken(accessToken string) (int, error) {
 			return nil, errors.New("invalid signing method")
 		}
 
-		return []byte(signingKey), nil
+		return []byte(os.Getenv("JWTKey")), nil
 	})
 	if err != nil {
 		return 0, err
