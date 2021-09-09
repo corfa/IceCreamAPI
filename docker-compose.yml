@@ -14,9 +14,11 @@ services:
     environment:
       - "POSTGRES_HOST_AUTH_METHOD=trust"
   database:
+    environment:
+      - POSTGRES_PASSWORD=00000
     ports:
       - "4000:5432"
     image: postgres
-    container_name: app-database
+    container_name: iceCreamApi
     env_file:
       - .env
