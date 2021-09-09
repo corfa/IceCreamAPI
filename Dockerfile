@@ -1,4 +1,6 @@
 FROM golang:latest
 EXPOSE 8080
 RUN git clone https://github.com/corfa/IceCreamApi.git
-RUN go mod download
+COPY ./ ./
+RUN go build -o app ./cmd/main.go
+CMD ["./app"]
