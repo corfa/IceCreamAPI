@@ -6,9 +6,6 @@ services:
     container_name: application
     ports:
       - "8080:8080"
-    command: sh -c "cd /IceCreamApi
-      && go build -o app ./main.go
-      && ./app"
     env_file:
       - .env
     depends_on:
