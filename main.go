@@ -2,8 +2,8 @@ package main
 
 import (
 	"github.com/joho/godotenv"
-	database2 "iceCreamApiWithDI/layers/database"
-	ModelForGorm2 "iceCreamApiWithDI/layers/database/ModelForGorm"
+	"iceCreamApiWithDI/layers/database"
+	"iceCreamApiWithDI/layers/database/ModelForGorm"
 	"iceCreamApiWithDI/layers/handler"
 	"iceCreamApiWithDI/layers/service"
 	"iceCreamApiWithDI/server"
@@ -19,28 +19,28 @@ func main() {
 		log.Fatal("Error loading .env file")
 	}
 
-	configDB := database2.ConfigDB{
+	configDB := database.ConfigDB{
 		Password: os.Getenv("DB_password"),
 		Host:     os.Getenv("DB_host"),
 		Sslmode:  os.Getenv("DB_sslmode"),
 		Port:     os.Getenv("DB_port"),
 		User:     os.Getenv("DB_user"),
 	}
-	EngineDatabase, errDBacon := database2.EnginPostgres(configDB)
+	EngineDatabase, errDBacon := database.EnginPostgres(configDB)
 	if errDBacon != nil {
 		log.Panicln(errDBacon)
 	}
 
-	needToMig,_:=strconv.ParseBool(os.Getenv("DB_need_to_mig"))
+	needToMig,_:=strconv.ParseBool(os.Getenv("DB_need_to_migrate"))
 
 	if needToMig {
-		errMig:=EngineDatabase.AutoMigrate(&ModelForGorm2.Users{}, &ModelForGorm2.IceCreams{})
+		errMig:=EngineDatabase.AutoMigrate(&ModelForGorm.Users{}, &ModelForGorm.IceCreams{})
 		if errMig!=nil{
 			log.Panicln(errMig)
 		}
 	}
 
-	Repository := database2.NewDataBase(EngineDatabase)
+	Repository := database.NewDataBase(EngineDatabase)
 	Service := service.NewServices(Repository)
 	MyHandler := handler.NewHandler(Service)
 	Server := new(server.Server)
