@@ -1,0 +1,25 @@
+version: '3'
+services:
+
+  server:
+    build: .
+    container_name: application
+    ports:
+      - "8080:8080"
+    command: sh -c "cd /IceCreamApi
+      && go build -o app ./main.go
+      && ./app"
+    env_file:
+      - .env
+    depends_on:
+      - database
+    restart: always
+    environment:
+      - "POSTGRES_HOST_AUTH_METHOD=trust"
+  database:
+    ports:
+      - "4000:5432"
+    image: postgres
+    container_name: app-database
+    env_file:
+      - .env
